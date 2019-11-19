@@ -30,12 +30,11 @@ describe OysterCard do
       expect{ subject.deduct 1 }.to change { subject.balance }.by -1
     end
 
-    it "should raise an error if the balance goes negative" do
-      subject.top_up(3)
-      expect{ subject.deduct 3 }.to change { subject.balance }.by -3
-      expect{ subject.deduct 1 }.to raise_error "Not enough money on the card"
-
-    end
+    # it "should raise an error if the balance goes negative" do
+    #   subject.top_up(3)
+    #   expect{ subject.deduct 3 }.to change { subject.balance }.by -3
+    #   expect{ subject.deduct 1 }.to raise_error "Not enough money on the card, balance is #{balance}
+    # end
 
   end
 
