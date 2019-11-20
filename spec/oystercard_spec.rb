@@ -35,7 +35,7 @@ describe OysterCard do
     end
 
     let(:entry_station) { double(:entry_station) }
-
+    let(:exit_station) { double(:exit_station)}
     describe "#touch_in" do
       
       
@@ -60,26 +60,27 @@ describe OysterCard do
 
       it "should be able to touch out" do
         subject.touch_in(entry_station)
-        subject.touch_out
+        subject.touch_out(exit_station)
         expect(subject.in_journey).to eq false
       end
 
       it "should be able to deduct money on touch out" do
         minimum_balance = OysterCard::MINIMUM_BALANCE
-        expect{ subject.touch_out }.to change { subject.balance }.by (- minimum_balance)
+        expect{ subject.touch_out(exit_station) }.to change { subject.balance }.by (- minimum_balance)
       end
 
       it "should be able to forget the entry station upon touch out" do
         subject.touch_in(entry_station)
-        subject.touch_out
+        subject.touch_out(exit_station)
         expect(subject.entry_station).to eq nil
+      end
+
+      it "should be able to store the exit station" do
+        subject.touch_in(entry_station)
+        subject.touch_out(exit_station)
+        expect(subject.exit_station).to eq exit_station
       end
     end
   end
 
-
-  describe "#station" do
-
-    
-  end
 end
