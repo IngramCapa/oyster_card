@@ -31,11 +31,11 @@ describe OysterCard do
 
     before do
       subject.top_up(OysterCard::MAXIMUM_BALANCE)
-      
     end
 
     let(:entry_station) { double(:entry_station) }
     let(:exit_station) { double(:exit_station)}
+    
     describe "#touch_in" do
       
       
@@ -80,6 +80,22 @@ describe OysterCard do
         subject.touch_out(exit_station)
         expect(subject.exit_station).to eq exit_station
       end
+    end
+  end
+
+  describe "#journey" do
+
+    before do
+      subject.top_up(OysterCard::MAXIMUM_BALANCE)
+    end
+
+    let(:entry_station) { double(:entry_station) }
+    let(:exit_station) { double(:exit_station)}
+
+    it "should store one journey" do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journey_history(entry_station, exit_station)).to include({entry_station: entry_station, exit_station: exit_station})
     end
   end
 
