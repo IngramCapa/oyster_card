@@ -68,6 +68,12 @@ describe OysterCard do
         minimum_balance = OysterCard::MINIMUM_BALANCE
         expect{ subject.touch_out }.to change { subject.balance }.by (- minimum_balance)
       end
+
+      it "should be able to forget the entry station upon touch out" do
+        subject.touch_in(entry_station)
+        subject.touch_out
+        expect(subject.entry_station).to eq nil
+      end
     end
   end
 
