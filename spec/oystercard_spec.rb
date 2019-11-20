@@ -49,10 +49,10 @@ describe OysterCard do
         expect{ oystercard.touch_in(entry_station) }.to raise_error "Insufficient money to touch in"
       end
 
-      it "should store the entry station" do 
-        subject.touch_in(entry_station)
-        expect(subject.entry_station).to eq entry_station
-      end
+      # it "should store the entry station" do 
+      #   subject.touch_in(entry_station)
+      #   expect(subject.entry_station).to eq entry_station
+      # end
     
     end
 
@@ -69,12 +69,12 @@ describe OysterCard do
         expect{ subject.touch_out(exit_station) }.to change { subject.balance }.by (- minimum_balance)
       end
 
-      it "should be able to forget the entry station upon touch out" do
-        subject.touch_in(entry_station)
-        subject.touch_out(exit_station)
-        expect(subject.entry_station).to eq nil
-        expect(subject.exit_station). to eq nil
-      end
+      # it "should be able to forget the entry station upon touch out" do
+      #   subject.touch_in(entry_station)
+      #   subject.touch_out(exit_station)
+      #   expect(subject.entry_station).to eq nil
+      #   expect(subject.exit_station). to eq nil
+      # end
       
     end
   end
