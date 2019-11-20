@@ -27,58 +27,52 @@ describe OysterCard do
     expect(subject.in_journey).to eq false
   end
 
-  describe "#touch_in" do
+  context "using the card" do
 
-    it "should be able to touch in" do
-      subject.top_up(5)
-      subject.touch_in
-      expect(subject.in_journey).to eq true
-    end
-
-    it "should raise an error if the min balance is not met" do
-      oystercard = OysterCard.new
-      expect{ oystercard.touch_in }.to raise_error "Insufficient money to touch in"
-    end
-
-    it "should store the entry station" do 
-      entry_station = double(:entry_station)
-      subject.top_up(5)
-      subject.touch_in(entry_station)
-      expect(subject.entry_station).to eq entry_station
+    before do
+      subject.top_up(OysterCard::MAXIMUM_BALANCE)
       
     end
-  
+
+    let(:entry_station) { double(:entry_station) }
+
+    describe "#touch_in" do
+      
+      
+      it "should be able to touch in" do
+        subject.touch_in(entry_station)
+        expect(subject.in_journey).to eq true
+      end
+
+      it "should raise an error if the min balance is not met" do
+        oystercard = OysterCard.new
+        expect{ oystercard.touch_in(entry_station) }.to raise_error "Insufficient money to touch in"
+      end
+
+      it "should store the entry station" do 
+        subject.touch_in(entry_station)
+        expect(subject.entry_station).to eq entry_station
+      end
+    
+    end
+
+    describe "#touch_out" do
+
+      it "should be able to touch out" do
+        subject.touch_in(entry_station)
+        subject.touch_out
+        expect(subject.in_journey).to eq false
+      end
+
+      it "should be able to deduct money on touch out" do
+        minimum_balance = OysterCard::MINIMUM_BALANCE
+        expect{ subject.touch_out }.to change { subject.balance }.by (- minimum_balance)
+      end
+    end
   end
 
-  describe "#touch_out" do
-    before do
-      subject.top_up(5)
-    end
-
-    it "should be able to touch out" do
-      subject.touch_in
-      subject.touch_out
-      expect(subject.in_journey).to eq false
-    end
-
-    it "should be able to deduct money on touch out" do
-      minimum_balance = OysterCard::MINIMUM_BALANCE
-      expect{ subject.touch_out }.to change { subject.balance }.by (- minimum_balance)
-    end
-  end
 
   describe "#station" do
-
-    context "entry station" do
-      before do 
-      subject.top_up(5)
-      subject.touch_in
-      end
-
-      it "should remember the entry station after touch in" do
-        
-      end
-    end
 
     
   end
