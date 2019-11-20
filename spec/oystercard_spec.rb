@@ -73,13 +73,9 @@ describe OysterCard do
         subject.touch_in(entry_station)
         subject.touch_out(exit_station)
         expect(subject.entry_station).to eq nil
+        expect(subject.exit_station). to eq nil
       end
-
-      it "should be able to store the exit station" do
-        subject.touch_in(entry_station)
-        subject.touch_out(exit_station)
-        expect(subject.exit_station).to eq exit_station
-      end
+      
     end
   end
 
@@ -95,7 +91,7 @@ describe OysterCard do
     it "should store one journey" do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.journey_history(entry_station, exit_station)).to include({entry_station: entry_station, exit_station: exit_station})
+      expect(subject.journey_history).to include({entry_station: entry_station, exit_station: exit_station})
     end
   end
 
