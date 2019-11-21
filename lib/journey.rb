@@ -1,27 +1,29 @@
-require_relative "station"
-
 class Journey 
 
-  attr_reader :in_journey
+  MINIMUM_FARE = 1
+  PENALTY_FARE = 6
+  @@journey_id = 0
 
-  def initialize
-    @in_journey = false
-    @complete = false
+  def initialize(station = nil)
+    @info = {entry_station: station, exit_station: nil, fare: PENALTY_FARE}
+    @@journey_id += 1
   end
 
-  def complete?
-    @complete
+  def end_journey(station = nil)
+    @info[:exit_station] = station
+    @info[:fare] = MINIMUM_FARE if @info[:exit_station] != nil && @info[:entry_station] != nil
+    self
   end
 
+  def in_journey?
+    !!@info[:entry_station]
+  end
 
   def fare
+    @info[:fare]
   end
 
-
-  # def in_journey?
-  #   return !!@journey[:entry_station]
-  #   # !! - returns true, not necessary for the rest of the code to be written
-  # end
-
-
+  def journey_id
+    @@journey_id
+  end
 end

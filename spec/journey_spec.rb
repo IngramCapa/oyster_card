@@ -6,23 +6,47 @@ describe Journey do
   #   expect(subject).to respond_to(:fare) 
   # end
 
-  let(:entry_station) { double(:entry_station) }
-
-  before do 
-    allow(entry_station).to receive(:name) {"holburn"}
-    allow(entry_station).to receive(:zone) {1}
+  it "should have nil entry station if initialised without a argument" do
+    journey = Journey.new
+    expect(journey.entry_station).to eq(nil)
   end
 
-  # it "should intitially not be on a journey" do 
-  #   expect(subject.in_journey).to eq false
-  # end
-
-  # it "should be in a journey after tapping in" do
-  #   expect(subject.in_journey).to eq(true)
-  # end
+  let(:station) { double(:station) }
+  
+  subject {described_class.new(station)}
 
   it "knows if a journey is not complete" do
-    expect(subject.complete?).to eq(false)
+    expect(subject.in_journey?).to eq(true)
   end
+
+  it "has a penatly fare by default" do 
+    expect(subject.fare).to eq Journey::PENALTY_FARE
+  end
+
+  context 'given an entry station' do
+    
   
+    it 'has an entry station' do
+      expect(subject.entry_station).to eq station
+    end
+
+    it "gives a penalty fare when there is no exit station" do 
+      expect(subject.fare).to eq(Journey::PENALTY_FARE)
+    end
+
+    context "given an exit station" do
+      let(:station2) { double(:station2) }
+      before do
+        subject.end_journey(station2)
+      end
+
+      it "has an exit station" do
+        expect(subject.exit_station).to eq(station2)
+      end
+
+      it 'calculates the correct fare' do
+        expect(subject.fare).to eq(Journey::MINIMUM_FARE)
+      end
+    end
+  end
 end
