@@ -5,9 +5,12 @@ class OysterCard
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
 
-  def initialize
+  attr_reader :journey_history
+
+  def initialize(journey_class = Journey)
     @journey_history = []
     @balance = 0
+    @journey_class = journey_class
   end
   
   def top_up(amount)
@@ -25,22 +28,23 @@ class OysterCard
       add_to_history
     end
 
-    @journey = Journey.new(entry_station)
+    @journey = @journey_class.new(entry_station)
   end
 
   def touch_out(exit_station)
     if @journey == nil
-      @journey = Journey.new
+      @journey = @journey_class.new
 
       @journey.end_journey(exit_station)
       deduct(@journey.fare)
       add_to_history
-      @journey = nil      
+         
     else
+
       @journey.end_journey(exit_station)
       deduct(@journey.fare)
       add_to_history
-      @journey = nil
+      
     end
 
     puts "Your balance is now negative: #{@balance}" if @balance < 0
@@ -62,5 +66,6 @@ class OysterCard
 
   def add_to_history
     @journey_history  << @journey
+    @journey = nil
   end
 end

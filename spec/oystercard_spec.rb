@@ -2,6 +2,11 @@ require "oystercard"
 
 describe OysterCard do
 
+  let(:journey) { double :journey, in_journey?: true, end_journey: nil, fare: 1}  # this is our fake journey instance with their return values
+  let(:journey_class) {double :journey_class, new: journey} # this creates our fake Journey class
+
+  subject { OysterCard.new journey_class}
+
   describe "#balance" do
 
     it "has an initial balance" do
@@ -58,9 +63,8 @@ describe OysterCard do
         expect(subject.in_journey?).to eq false
       end
 
-      xit "should be able to deduct money on touch out" do
-        minimum_balance = OysterCard::MINIMUM_BALANCE
-        expect{ subject.touch_out(exit_station) }.to change { subject.balance }.by (- minimum_balance)
+      it "should be able to deduct money on touch out" do
+        expect{ subject.touch_out(exit_station) }.to change { subject.balance }.by -1
       end
     end
   end
@@ -74,10 +78,12 @@ describe OysterCard do
     let(:entry_station) { double(:entry_station) }
     let(:exit_station) { double(:exit_station)}
 
-    xit "should store one journey" do # to be removed upon creation of journeylog
+    it "should store one journey" do # to be removed upon creation of journeylog
       subject.touch_in(entry_station)
+      allow(journey).to receive(:fare).and_return 1
       subject.touch_out(exit_station)
-      expect(subject.journey_history).to include({entry_station: entry_station, exit_station: exit_station})
+      #the journey arg below is the double 
+      expect(subject.journey_history).to include(journey)
     end
   end
 
