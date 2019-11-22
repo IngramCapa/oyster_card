@@ -2,10 +2,9 @@ require "oystercard"
 
 describe OysterCard do
 
-  let(:journey) { double :journey, in_journey?: true, end_journey: nil, fare: 1}  # this is our fake journey instance with their return values
-  let(:journey_class) {double :journey_class, new: journey} # this creates our fake Journey class
+  let(:journey_log) { double :journey_log, start: 0 }
 
-  subject { OysterCard.new journey_class}
+  subject { OysterCard.new journey_log}
 
   describe "#balance" do
 

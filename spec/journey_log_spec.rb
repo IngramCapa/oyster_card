@@ -50,8 +50,6 @@ describe JourneyLog do
     it "should return the penalty fare if there is no entry station" do
       allow(journey).to receive(:fare).and_return 6
       expect(subject.finish(station)).to eq 6
-      
-      
     end
   end
 end
