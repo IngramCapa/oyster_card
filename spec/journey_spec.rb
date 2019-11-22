@@ -24,7 +24,6 @@ describe Journey do
   end
 
   context 'given an entry station' do
-    
   
     it 'has an entry station' do
       expect(subject.entry_station).to eq station
