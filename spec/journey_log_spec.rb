@@ -27,5 +27,31 @@ describe JourneyLog do
       subject.start station
       expect(subject.in_journey?).to eq true
     end
+
+    it "should return a penalty fare if there is no exit station for previous journey" do
+      allow(journey).to receive(:fare).and_return 6
+      subject.start station
+      expect(subject.start(station)).to eq 6
+    end
+  end
+
+  describe "#finish" do
+    it "should return a minimum fare at the end of the journey" do
+      subject.start(station)
+      expect(subject.finish(station)).to eq 1
+    end
+
+    it "should not be in a journey" do
+      subject.start(station)
+      subject.finish(station)
+      expect(subject.in_journey?).to eq false
+    end
+
+    it "should return the penalty fare if there is no entry station" do
+      allow(journey).to receive(:fare).and_return 6
+      expect(subject.finish(station)).to eq 6
+      
+      
+    end
   end
 end

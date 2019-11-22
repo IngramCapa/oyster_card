@@ -9,10 +9,11 @@ class Journey
     @fare = PENALTY_FARE
   end
 
-  def end_journey(station = nil)
+  def end_journey(station)
+    
     @exit_station = station
-    @fare = MINIMUM_FARE if @exit_station != nil && @entry_station != nil
-    self
+    @fare = MINIMUM_FARE if @entry_station != nil
+    
   end
 
   def in_journey?

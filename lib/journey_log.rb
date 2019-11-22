@@ -10,9 +10,18 @@ class JourneyLog
   end
 
   def start station
+    fare = @in_journey ? @journeys.last.fare : 0
     @journeys << @journey_class.new(station)
     @in_journey = true
-    0
+    fare
+  end
+  
+  def finish station
+    @journeys << @journey_class.new unless @in_journey
+
+    @journeys.last.end_journey(station)
+    @in_journey = false
+    @journeys.last.fare
   end
 
   def in_journey?

@@ -80,9 +80,8 @@ describe OysterCard do
 
     it "should store one journey" do # to be removed upon creation of journeylog
       subject.touch_in(entry_station)
-      allow(journey).to receive(:fare).and_return 1
       subject.touch_out(exit_station)
-      #the journey arg below is the double 
+      #the journey arg below is the double
       expect(subject.journey_history).to include(journey)
     end
   end
